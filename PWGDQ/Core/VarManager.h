@@ -88,7 +88,7 @@ class VarManager : public TObject
     CollisionTimestamp = BIT(3),
     ReducedEvent = BIT(4),
     ReducedEventExtended = BIT(5),
-    ReducedEventExtendedMC = BIT(5),//Debadattazzz 
+    ReducedEventExtendedMC = BIT(5),//Debadatta
     ReducedEventVtxCov = BIT(6),
     CollisionMC = BIT(7),
     CollisionMultMC = BIT(7),//Debadatta
