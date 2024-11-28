@@ -2470,7 +2470,7 @@ void VarManager::FillTrackCollisionMatCorr(T const& track, C const& collision, M
         values[kTrackDCAsigZ] = dca[1] / std::sqrt(track.cZZ());
       }
     }
-  }
+  } 
 }
 
 template <uint32_t fillMap, typename T>
