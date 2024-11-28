@@ -93,6 +93,104 @@ void o2::aod::dqhistograms::DefineHistograms(HistogramManager* hm, const char* h
         hm->AddHistogram(histClass, "MultTPC_MultFT0A", "MultTPC vs MultFT0A", false, 100, 0, 500.0, VarManager::kMultTPC, 100, 0, 200.0, VarManager::kMultFT0A);
         hm->AddHistogram(histClass, "MultTPC_MultFT0C", "MultTPC vs MultFT0C", false, 100, 0, 500.0, VarManager::kMultTPC, 100, 0, 300.0, VarManager::kMultFT0C);
         hm->AddHistogram(histClass, "MultFT0A_MultFT0C", "MultFT0A vs MultFT0C", false, 100, 0, 200.0, VarManager::kMultFT0A, 100, 0, 300.0, VarManager::kMultFT0C);
+
+
+ // //-----------------Debadatta ------------
+        //##### 1D Plots  
+        hm->AddHistogram(histClass, "Eta", "", false, 100, -5.f, +5.f, VarManager::kEta);//Debadatta  
+        hm->AddHistogram(histClass, "Phi", "", false, 720, 0.0, TMath::TwoPi(), VarManager::kPhi);//Debadatta   
+         hm->AddHistogram(histClass, "MultITSNEW", "MultITS", false, 250, 0.0, 250.0, VarManager::kMultITS);//Debadatta 
+        hm->AddHistogram(histClass, "SigmaZ", "SigmaZ", false, 100, 0.0, 10.0, VarManager::kVtxCovZZ);//Sigma Z --Debadatta
+        hm->AddHistogram(histClass, "VtxNcontribReal", "VtxNcontribReal", false, 500, 0, 500.0, VarManager::kVtxNcontribReal);//kVtxNcontribReal
+        hm->AddHistogram(histClass, "PVcontributor", "PV contributor", false, 2, -0.5, 1.5, VarManager::kPVContributor);//PVcontributor
+
+        //ITS Related
+        hm->AddHistogram(histClass, "MultNTracksHasITS", "MultNTracksHasITS", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasITS);//Debadatta---TracksHasITS
+        hm->AddHistogram(histClass, "MultNTracksHasITSR", "MultNTracksHasITSR", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasITSR);//Debadatta---TracksHasITS
+        hm->AddHistogram(histClass, "MultNTracksITSOnly", "MultNTracksITSOnly", false, 400, 0.0, 400.0, VarManager::kMultNTracksITSOnly);//Debadatta---TracksHasITS
+        hm->AddHistogram(histClass, "MultNTracksITSTPC", "MultNTracksITSTPC,", false, 400, 0.0, 400.0, VarManager::kMultNTracksITSTPC);//Debadatta---kMultNTracksITSTPC
+        hm->AddHistogram(histClass, "MultAllTracksITSTPC", "MultAllTracksITSTPC", false, 400, 0.0, 400.0, VarManager::kMultAllTracksITSTPC);//Debadatta---kMultAllTracksITSTPC
+        //TPC Related
+        hm->AddHistogram(histClass, "MultNTracksHasTPC", "MultNTracksHasTPC", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasTPC);//Debadatta---kMultNTracksHasTPC
+        hm->AddHistogram(histClass, "MultNTracksTPCOnly", "MultNTracksTPCOnly", false, 400, 0.0, 400.0, VarManager::kMultNTracksTPCOnly);//Debadatta---multNTracksTPCOnly
+        hm->AddHistogram(histClass, "MultAllTracksTPCOnly", "MultAllTracksTPCOnly", false, 1000, 0.0, 1000.0, VarManager::kMultAllTracksTPCOnly);//Debadatta---kMultAllTracksTPCOnly
+
+        //##### 2D Plots  
+        hm->AddHistogram(histClass, "NContrib_SigmaZ", "n_contrib vs Sigma Z", false, 100, 0.0, 100.0, VarManager::kVtxNcontrib, 100, 0.0, 10.0, VarManager::kVtxCovZZ);//ncontrib vs SigmaZ--Debadatta
+        hm->AddHistogram(histClass, "EtaVsPhi", "", false, 100, -5.f, -2.f, VarManager::kEta, 720, 0.0, TMath::TwoPi(), VarManager::kPhi);//Debadatta  
+
+
+        //1. VtxZ  vs Tracks(multiplicity) Histograms
+        // hm->AddHistogram(histClass, "VtxZ_MultITS", "VtxZ vs MultITS", false, 200, -10.0, 10.0, VarManager::kVtxZ, 100, 0, 100.0, VarManager::kMultITS);//Debadatta
+        hm->AddHistogram(histClass, "VtxZ_VtxNcontrib", "VtxZ vs NContrib", false, 200, -10.0, 10.0, VarManager::kVtxZ, 500, 0, 500.0, VarManager::kVtxNcontrib);
+        hm->AddHistogram(histClass, "VtxZ_VtxNcontribReal", "VtxZ vs VtxNcontribReal", false, 200, -10.0, 10.0, VarManager::kVtxZ, 500, 0, 500.0, VarManager::kVtxNcontribReal);//kVtxNcontribReal = multNTracksPV,-- Debadatta
+
+        //Ionut-Calculated
+        hm->AddHistogram(histClass, "VtxZ_MultNTracksHasITS", "VtxZ vs MultNTracksHasITS", false, 200, -10.0, 10.0, VarManager::kVtxZ, 400, 0, 400.0, VarManager::kMultNTracksHasITS);//Debadatta
+        hm->AddHistogram(histClass, "VtxZ_MultNTracksITSOnly", "VtxZ vs MultNTracksITSOnly", false, 200, -10.0, 10.0, VarManager::kVtxZ, 400, 0, 400.0, VarManager::kMultNTracksITSOnly);//Debadatta
+        hm->AddHistogram(histClass, "VtxZ_MultNTracksITSTPC", "VtxZ vs MultNTracksITSTPC", false, 200, -10.0, 10.0, VarManager::kVtxZ, 400, 0, 400.0, VarManager::kMultNTracksITSTPC);//Debadatta
+        hm->AddHistogram(histClass, "VtxZ_MultAllTracksITSTPC", "VtxZ vs MultAllTracksITSTPC", false, 200, -10.0, 10.0, VarManager::kVtxZ, 400, 0, 400.0, VarManager::kMultAllTracksITSTPC);//Debadatta
+        hm->AddHistogram(histClass, "VtxZ_MultNTracksHasTPC", "VtxZ vs MultNTracksHasTPC", false, 200, -10.0, 10.0, VarManager::kVtxZ, 400, 0, 400.0, VarManager::kMultNTracksHasTPC);//Debadatta 
+        hm->AddHistogram(histClass, "VtxZ_MultNTracksTPCOnly", "VtxZ vs MultNTracksTPCOnly", false, 200, -10.0, 10.0, VarManager::kVtxZ, 400, 0, 400.0, VarManager::kMultNTracksTPCOnly);//Debadatta
+        hm->AddHistogram(histClass, "VtxZ_MultAllTracksTPCOnly", "VtxZ vs MultAllTracksTPCOnly", false, 200, -10.0, 10.0, VarManager::kVtxZ, 400, 0, 400.0, VarManager::kMultAllTracksTPCOnly);//Debadatta
+
+        //2. kMass vs kMultNTracksHasITS:
+
+        hm->AddHistogram(histClass, "Mass_MultNTracksHasITS", "Mass vs MultNTracksHasITS", false, 500, 0.0, 5.0, VarManager::kMass, 400, 0, 400.0, VarManager::kMultNTracksHasITS);//Debadatta
+        hm->AddHistogram(histClass, "Mass_MultFT0A", "Mass vs MultFT0A", false, 500, 0.0, 5.0, VarManager::kMass, 400, 0, 400.0, VarManager::kMultFT0A);//Debadatta
+
+         //FT0C:::
+        hm->AddHistogram(histClass, "VtxZ_MultFT0C", "VtxZ vs MultFT0C", false, 60, -15.0, 15.0, VarManager::kVtxZ, 2000, 0.0, 2000.0, VarManager::kMultFT0C);
+        hm->AddHistogram(histClass, "CentFT0C_VtxZ", "CentFT0C vs VtxZ", false, 100, 0.0, 100.0, VarManager::kCentFT0C, 60, -15.0, 15.0, VarManager::kVtxZ);
+        hm->AddHistogram(histClass, "CentFT0C_MultFT0C", "CentFT0C vs MultFT0C", false, 100, 0.0, 100.0, VarManager::kCentFT0C, 2000, 0.0, 2000.0, VarManager::kMultFT0C);
+
+        hm->AddHistogram(histClass, "CentFT0C_MultNTracksHasITS", "CentFT0C vs MultNTracksHasITS", false, 100, 0.0, 100.0, VarManager::kCentFT0C, 400, 0.0, 400.0, VarManager::kMultNTracksHasITS);
+        hm->AddHistogram(histClass, "CentFT0C_MultNTracksHasTPC", "CentFT0C vs MultNTracksHasTPC", false, 100, 0.0, 100.0, VarManager::kCentFT0C, 400, 0.0, 400.0, VarManager::kMultNTracksHasTPC);
+
+        hm->AddHistogram(histClass, "MultNTracksHasITS_CentFT0C", "MultNTracksHasITS vs CentFT0C", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasITS,  100, 0.0, 100.0, VarManager::kCentFT0C);
+        hm->AddHistogram(histClass, "MultNTracksHasTPC_CentFT0C", "MultNTracksHasTPC vs CentFT0C", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasTPC,  100, 0.0, 100.0, VarManager::kCentFT0C);
+
+//Corellation Plots:
+        hm->AddHistogram(histClass, "MultNTracksHasITS_MultNTracksHasTPC", "MultNTracksHasITS vs MultNTracksHasTPC", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasITS, 400, 0.0, 400.0, VarManager::kMultNTracksHasTPC);
+        hm->AddHistogram(histClass, "MultNTracksHasITS_MultFT0C", "MultNTracksHasITS vs MultFT0C", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasITS,  2000, 0, 2000.0, VarManager::kMultFT0C);
+        hm->AddHistogram(histClass, "MultNTracksHasTPC_MultFT0C", "MultNTracksHasTPC vs MultFT0C", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasTPC,  2000, 0, 2000.0, VarManager::kMultFT0C);
+
+// //+++++++++++++++++++++++Bhagyarathi++++++++++++++++++++++++++++++++++++
+//         hm->AddHistogram(histClass, "MultNTracksHasITS", "MultNTracksHasITS", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasITS);
+//         hm->AddHistogram(histClass, "MultNTracksHasTPC", "MultNTracksHasTPC", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasTPC);
+//         hm->AddHistogram(histClass, "MultNTracksITSTPC", "MultNTracksITSTPC", false, 400, 0.0, 400.0, VarManager::kMultNTracksITSTPC);
+//         hm->AddHistogram(histClass, "MultNTracksITSOnly", "MultNTracksITSOnly", false, 400, 0.0, 400.0, VarManager::kMultNTracksITSOnly);
+//         hm->AddHistogram(histClass, "MultNTracksTPCOnly", "MultNTracksTPCOnly", false, 400, 0.0, 400.0, VarManager::kMultNTracksTPCOnly);
+//         hm->AddHistogram(histClass, "MultAllTracksITSTPC", "MultAllTracksITSTPC", false, 400, 0.0, 400.0, VarManager::kMultAllTracksITSTPC);
+//         hm->AddHistogram(histClass, "MultAllTracksTPCOnly", "MultAllTracksTPCOnly", false,400, 0.0, 400.0, VarManager::kMultAllTracksTPCOnly);
+
+//         hm->AddHistogram(histClass, "VtxZ_MultNTracksHasITS", "VtxZ vs MultNTracksHasITS", false, 60, -15.0, 15.0, VarManager::kVtxZ, 400, 0.0, 400.0, VarManager::kMultNTracksHasITS);
+//         hm->AddHistogram(histClass, "VtxZ_MultNTracksHasTPC", "VtxZ vs MultNTracksHasTPC", false, 60, -15.0, 15.0, VarManager::kVtxZ, 400, 0.0, 400.0, VarManager::kMultNTracksHasTPC);
+//         hm->AddHistogram(histClass, "VtxZ_MultNTracksHasITSTPC", "VtxZ vs MultNTracksITSTPC", false, 60, -15.0, 15.0, VarManager::kVtxZ, 400, 0.0, 400.0, VarManager::kMultNTracksITSTPC);
+//         hm->AddHistogram(histClass, "VtxZ_MultNTracksITSOnly", "VtxZ vs MultNTracksITSOnly", false, 60, -15.0, 15.0, VarManager::kVtxZ, 400, 0.0, 400.0, VarManager::kMultNTracksITSOnly);
+//         hm->AddHistogram(histClass, "VtxZ_MultNTracksTPCOnly", "VtxZ vs MultNTracksTPCOnly", false, 60, -15.0, 15.0, VarManager::kVtxZ, 400, 0.0, 400.0, VarManager::kMultNTracksTPCOnly);
+//         hm->AddHistogram(histClass, "VtxZ_MultAllTracksITSTPC", "VtxZ vs MultAllTracksITSTPC", false, 60, -15.0, 15.0, VarManager::kVtxZ, 400, 0.0, 400.0, VarManager::kMultAllTracksITSTPC);
+//         hm->AddHistogram(histClass, "VtxZ_MultAllTracksTPCOnly", "VtxZ vs MultAllTracksTPCOnly", false, 60, -15.0, 15.0, VarManager::kVtxZ, 400, 0.0, 400.0, VarManager::kMultAllTracksTPCOnly); 
+
+//  //FT0C:::
+//         hm->AddHistogram(histClass, "VtxZ_MultFT0C", "VtxZ vs MultFT0C", false, 60, -15.0, 15.0, VarManager::kVtxZ, 2000, 0.0, 2000.0, VarManager::kMultFT0C);
+//         hm->AddHistogram(histClass, "CentFT0C_VtxZ", "CentFT0C vs VtxZ", false, 100, 0.0, 100.0, VarManager::kCentFT0C, 60, -15.0, 15.0, VarManager::kVtxZ);
+//         hm->AddHistogram(histClass, "CentFT0C_MultFT0C", "CentFT0C vs MultFT0C", false, 100, 0.0, 100.0, VarManager::kCentFT0C, 2000, 0.0, 2000.0, VarManager::kMultFT0C);
+
+//         hm->AddHistogram(histClass, "CentFT0C_MultNTracksHasITS", "CentFT0C vs MultNTracksHasITS", false, 100, 0.0, 100.0, VarManager::kCentFT0C, 400, 0.0, 400.0, VarManager::kMultNTracksHasITS);
+//         hm->AddHistogram(histClass, "CentFT0C_MultNTracksHasTPC", "CentFT0C vs MultNTracksHasTPC", false, 100, 0.0, 100.0, VarManager::kCentFT0C, 400, 0.0, 400.0, VarManager::kMultNTracksHasTPC);
+
+//         hm->AddHistogram(histClass, "MultNTracksHasITS_CentFT0C", "MultNTracksHasITS vs CentFT0C", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasITS,  100, 0.0, 100.0, VarManager::kCentFT0C);
+//         hm->AddHistogram(histClass, "MultNTracksHasTPC_CentFT0C", "MultNTracksHasTPC vs CentFT0C", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasTPC,  100, 0.0, 100.0, VarManager::kCentFT0C);
+
+
+// //Corellation Plots:
+//         hm->AddHistogram(histClass, "MultNTracksHasITS_MultNTracksHasTPC", "MultNTracksHasITS vs MultNTracksHasTPC", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasITS, 400, 0.0, 400.0, VarManager::kMultNTracksHasTPC);
+//         hm->AddHistogram(histClass, "MultNTracksHasITS_MultFT0C", "MultNTracksHasITS vs MultFT0C", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasITS,  2000, 0, 2000.0, VarManager::kMultFT0C);
+//         hm->AddHistogram(histClass, "MultNTracksHasTPC_MultFT0C", "MultNTracksHasTPC vs MultFT0C", false, 400, 0.0, 400.0, VarManager::kMultNTracksHasTPC,  2000, 0, 2000.0, VarManager::kMultFT0C);
+
+// //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
       } else {
         hm->AddHistogram(histClass, "MultTPC", "MultTPC", false, 200, 0.0, 50000.0, VarManager::kMultTPC);
         hm->AddHistogram(histClass, "MultTPC_vsTimeSOR", "MultTPC vs time from SOR", true, 10000, 0.0, 1000.0, VarManager::kTimeFromSOR, 10, 0.0, 50000.0, VarManager::kMultTPC);
@@ -751,7 +849,8 @@ void o2::aod::dqhistograms::DefineHistograms(HistogramManager* hm, const char* h
       hm->AddHistogram(histClass, "hMftClusterSize", "", false, 101, -0.5f, 100.5f, VarManager::kMftClusterSize);
       hm->AddHistogram(histClass, "hMftMeanClusterSize", "", false, 200, 0.f, 20.f, VarManager::kMftMeanClusterSize);
     }
-    if (subGroupStr.Contains("mc")) {
+    if (subGroupStr.Contains("mcc")) {
+      hm->AddHistogram(histClass, "MCPx", "MCPx", false, 200, 0.0, 20.0, VarManager::kMCPx);//Debadatta
       hm->AddHistogram(histClass, "Pt_vs_PtMC", "pT vs MC pT", false, 200, 0.0, 20.0, VarManager::kPt, 200, 0.0, 20.0, VarManager::kMCPt);
       hm->AddHistogram(histClass, "Eta_vs_EtaMC", "#eta vs MC #eta", false, 50, -1.0, 1.0, VarManager::kEta, 50, -1.0, 1.0, VarManager::kMCEta);
       hm->AddHistogram(histClass, "Phi_vs_PhiMC", "#varphi vs MC #varphi", false, 50, 0.0, 2. * TMath::Pi(), VarManager::kPhi, 50, 0.0, 2. * TMath::Pi(), VarManager::kMCPhi);
@@ -838,6 +937,10 @@ void o2::aod::dqhistograms::DefineHistograms(HistogramManager* hm, const char* h
       if (subGroupStr.Contains("mult")) {
         hm->AddHistogram(histClass, "Mass_Pt_MultFV0A", "", false, 200, 0.0, 5.0, VarManager::kMass, 40, 0.0, 40.0, VarManager::kPt, 100, 0.0, 25000.0, VarManager::kMultFV0A);
         hm->AddHistogram(histClass, "Mass_VtxNcontribReal", "Mass vs VtxNcontribReal", false, 200, 0.0, 5.0, VarManager::kMass, 200, 0, 200.0, VarManager::kVtxNcontribReal);
+        hm->AddHistogram(histClass, "Mass_MultNTracksHasITS", "Mass vs MultNTracksHasITS", false, 500, 0.0, 5.0, VarManager::kMass, 400, 0, 400.0, VarManager::kMultNTracksHasITS);//Debadatta
+        hm->AddHistogram(histClass, "Mass_MultNTracksHasITSR", "Mass vs MultNTracksHasITSR", false, 500, 0.0, 5.0, VarManager::kMass, 400, 0, 400.0, VarManager::kMultNTracksHasITSR);//Debadatta
+
+
       }
       if (subGroupStr.Contains("polarization")) {
         hm->AddHistogram(histClass, "cosThetaHE", "", false, 100, -1., 1., VarManager::kCosThetaHE);

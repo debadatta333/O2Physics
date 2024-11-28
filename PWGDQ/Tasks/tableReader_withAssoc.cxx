@@ -129,7 +129,7 @@ using MyMuonTracksSelectedWithColl = soa::Join<aod::ReducedMuons, aod::ReducedMu
 
 //=====Debadatta
 
-using MyEventsMultExtra1 = soa::Join<aod::ReducedEvents, aod::ReducedEventsExtended, aod::ReducedEventsVtxCov, aod::EventCuts, aod::ReducedEventsMultPV, aod::ReducedEventsMultAll>;
+using MyEventsMultExtraWithPV = soa::Join<aod::ReducedEvents, aod::ReducedEventsExtended, aod::ReducedEventsVtxCov, aod::EventCuts, aod::ReducedEventsMultPV, aod::ReducedEventsMultAll>;
 
 using MyEventsVtxCovSelectedWithMultExtra = soa::Join<aod::ReducedEvents, aod::ReducedEventsExtended, aod::ReducedEventsVtxCov, aod::EventCuts, aod::MultsExtra>;
 
@@ -1673,90 +1673,14 @@ struct AnalysisSameEventPairing {
 //===================== Debadatta ======================================================
 
 
-  
-
-    void processBarrelMuonOnlySkimmed3(MyEventsMultExtra1 const& events,
+    void processMuonOnlySkimmedWithMultExtra(MyEventsMultExtraWithPV const& events,
                               soa::Join<aod::ReducedMuonsAssoc, aod::MuonTrackCuts> const& muonAssocs, MyMuonTracksWithCovWithAmbiguities const& muons)
   {
     runSameEventPairing<true, VarManager::kDecayToMuMu, gkEventFillMapWithMultExtra, gkMuonFillMapWithCov>(events, muonAssocsPerCollision, muonAssocs, muons);
   }
 
 
-//----------------------------
-
-
-//  void processBarrelMuonOnlySkimmed3(MyEventsVtxCovSelected const& events,
-//                               soa::Join<aod::ReducedTracksAssoc, aod::BarrelTrackCuts, aod::Prefilter> const& barrelAssocs,MyBarrelTracksWithCovWithAmbiguities const& barrelTracks,
-//                               soa::Join<aod::ReducedMuonsAssoc, aod::MuonTrackCuts> const& muonAssocs, MyMuonTracksWithCovWithAmbiguities const& muons)
-//   {
-//     runSameEventPairing<true, VarManager::kDecayToEE, gkEventFillMapWithMultsExtra, gkTrackFillMapWithCov>(events, trackAssocsPerCollision, barrelAssocs, barrelTracks);
-//     runSameEventPairing<true, VarManager::kDecayToMuMu, gkEventFillMapWithMultsExtra, gkMuonFillMapWithCov>(events, muonAssocsPerCollision, muonAssocs, muons);
-//   }
-
-
-
-  void processMuonOnlySkimmedWithMultExtra(MyEventsVtxCovSelectedWithMultExtra const& events,
-                              soa::Join<aod::ReducedMuonsAssoc, aod::MuonTrackCuts> const& muonAssocs, MyMuonTracksWithCovWithAmbiguities const& muons)
-  {
-    runSameEventPairing<true, VarManager::kDecayToMuMu, gkEventFillMapWithMultsExtra, gkMuonFillMapWithCov>(events, muonAssocsPerCollision, muonAssocs, muons);
-  }
-
-
-
-
-
-  // void processElectronMuonSkimmed(soa::Filtered<MyEventsVtxCovSelected>::iterator const& event, soa::Filtered<MyBarrelTracksSelected> const& tracks, soa::Filtered<MyMuonTracksSelected> const& muons)
-  // {
-  //   // Reset the fValues array
-  //   VarManager::ResetValues(0, VarManager::kNVars);
-  //   VarManager::FillEvent<gkEventFillMap>(event, VarManager::fgValues);
-  //   runSameEventPairing<true, VarManager::kElectronMuon, gkEventFillMap, gkTrackFillMap>(event, tracks, muons);
-  // }
-
-
-  // void processBarrelOnlySkimmed(MyEventsVtxCovSelected const& events,
-  //                               soa::Join<aod::ReducedTracksAssoc, aod::BarrelTrackCuts, aod::Prefilter> const& barrelAssocs,
-  //                               MyBarrelTracksWithCovWithAmbiguities const& barrelTracks)
-  // {
-  //   runSameEventPairing<true, VarManager::kDecayToEE, gkEventFillMapWithCov, gkTrackFillMapWithCov>(events, trackAssocsPerCollision, barrelAssocs, barrelTracks);
-  // }
-
-
-
-
-  // void processBarrelMuonOnlySkimmed3(MyEventsVtxCovSelected const& events,
-  //                        soa::Join<aod::ReducedTracksAssoc, aod::BarrelTrackCuts, aod::Prefilter> const& barrelAssocs, MyBarrelTracksWithCovWithAmbiguities const& barrelTracks,
-  //                        soa::Join<aod::ReducedMuonsAssoc, aod::MuonTrackCuts> const& muonAssocs, MyMuonTracksWithCovWithAmbiguities const& muons)
-  // {
-  //   runSameEventPairing<true, VarManager::kDecayToEE, gkEventFillMapWithMultsExtra, gkTrackFillMapWithCov>(events, trackAssocsPerCollision, barrelAssocs, barrelTracks);
-  //   runSameEventPairing<true, VarManager::kDecayToMuMu, gkEventFillMapWithMultsExtra, gkMuonFillMapWithCov>(events, muonAssocsPerCollision, muonAssocs, muons);
-  // }
-
-
-
-
-
-
-  void processBarrelOnlySkimmed2(MyEventsVtxCovSelectedMultExtra const& events,
-                                soa::Join<aod::ReducedTracksAssoc, aod::BarrelTrackCuts, aod::Prefilter> const& barrelAssocs,
-                                MyBarrelTracksWithCovWithAmbiguities const& barrelTracks)
-  {
-    runSameEventPairing<true, VarManager::kDecayToEE, gkEventFillMapWithCov, gkTrackFillMapWithCov>(events, trackAssocsPerCollision, barrelAssocs, barrelTracks);
-  }
-
-
-
-  //   void processMuonOnlySkimmedWithMultExtra(MyEventsVtxCovSelectedMultExtra const& events,
-  //                        soa::Join<aod::ReducedTracksAssoc, aod::BarrelTrackCuts, aod::Prefilter> const& barrelAssocs, MyBarrelTracksWithCovWithAmbiguities const& barrelTracks,
-  //                        soa::Join<aod::ReducedMuonsAssoc, aod::MuonTrackCuts> const& muonAssocs, MyMuonTracksWithCovWithAmbiguities const& muons)
-  // {
-  //   // VarManager::FillEvent<gkEventFillMapWithCovWithMultsExtra>(events, VarManager::fgValues);//added 24/11/24
-  //   runSameEventPairing<true, VarManager::kDecayToEE, gkEventFillMapWithCov, gkTrackFillMapWithCov>(events, trackAssocsPerCollision, barrelAssocs, barrelTracks);
-  //   runSameEventPairing<true, VarManager::kDecayToMuMu, gkEventFillMapWithCov, gkMuonFillMapWithCov>(events, muonAssocsPerCollision, muonAssocs, muons);
-  // }
-
-
-
+//==============================================================================
 
 
 
@@ -1769,17 +1693,6 @@ struct AnalysisSameEventPairing {
     runSameEventPairing<true, VarManager::kDecayToMuMu, gkEventFillMapWithCov, gkMuonFillMapWithCov>(events, muonAssocsPerCollision, muonAssocs, muons);
 
   }
-
-//===========3rd MultPV included ---only MyEventsVtxCovSelectedMultExtra added
-
-  // void processBarrelMuonOnlySkimmed3(MyEventsVtxCovSelectedMultExtra const& events,
-  //                               soa::Join<aod::ReducedTracksAssoc, aod::BarrelTrackCuts, aod::Prefilter> const& barrelAssocs,
-  //                               MyBarrelTracksWithCovWithAmbiguities const& barrelTracks, soa::Join<aod::ReducedMuonsAssoc, 
-  //                               aod::MuonTrackCuts>const& muonAssocs, MyMuonTracksWithCovWithAmbiguities const& muons)
-  // {
-  //   runSameEventPairing<true, VarManager::kDecayToEE, gkEventFillMapWithCov, gkTrackFillMapWithCov>(events, trackAssocsPerCollision, barrelAssocs, barrelTracks);
-  //   runSameEventPairing<true, VarManager::kDecayToMuMu, gkEventFillMapWithCov, gkMuonFillMapWithCov>(events, muonAssocsPerCollision, muonAssocs, muons);
-  // }
 
 
 
@@ -1808,14 +1721,11 @@ struct AnalysisSameEventPairing {
   PROCESS_SWITCH(AnalysisSameEventPairing, processAllSkimmed, "Run all types of pairing, with skimmed tracks/muons", false);
 
   PROCESS_SWITCH(AnalysisSameEventPairing, processBarrelOnlySkimmed, "Run barrel only pairing, with skimmed tracks", false);
-    PROCESS_SWITCH(AnalysisSameEventPairing, processBarrelOnlySkimmed2, "Run barrel only pairing, with skimmed tracks", false);
   PROCESS_SWITCH(AnalysisSameEventPairing, processBarrelOnlyWithCollSkimmed, "Run barrel only pairing, with skimmed tracks and with collision information", false);
   PROCESS_SWITCH(AnalysisSameEventPairing, processBarrelOnlySkimmedNoCov, "Run barrel only pairing (no covariances), with skimmed tracks and with collision information", false);
   PROCESS_SWITCH(AnalysisSameEventPairing, processMuonOnlySkimmed, "Run muon only pairing, with skimmed tracks", false);
   PROCESS_SWITCH(AnalysisSameEventPairing, processMuonOnlySkimmedWithMultExtra, "Run muon only pairing, with skimmed tracks", false);//DEbadatta
   PROCESS_SWITCH(AnalysisSameEventPairing, processBarrelMuonOnlySkimmed, "Run muon only pairing, with skimmed tracks", false);//DEbadatta
-    PROCESS_SWITCH(AnalysisSameEventPairing, processBarrelMuonOnlySkimmed3, "Run muon only pairing, with skimmed tracks", false);//DEbadatta
-
   PROCESS_SWITCH(AnalysisSameEventPairing, processMixingAllSkimmed, "Run all types of mixed pairing, with skimmed tracks/muons", false);
   PROCESS_SWITCH(AnalysisSameEventPairing, processMixingBarrelSkimmed, "Run barrel type mixing pairing, with skimmed tracks", false);
   PROCESS_SWITCH(AnalysisSameEventPairing, processDummy, "Dummy function, enabled only if none of the others are enabled", false);

@@ -88,8 +88,10 @@ class VarManager : public TObject
     CollisionTimestamp = BIT(3),
     ReducedEvent = BIT(4),
     ReducedEventExtended = BIT(5),
+    ReducedEventExtendedMC = BIT(5),//Debadattazzz
     ReducedEventVtxCov = BIT(6),
     CollisionMC = BIT(7),
+    CollisionMultMC = BIT(7),//Debadatta
     ReducedEventMC = BIT(8),
     ReducedEventQvector = BIT(9),
     CollisionCent = BIT(10),
@@ -102,6 +104,8 @@ class VarManager : public TObject
     ReducedZdc = BIT(17),
     CollisionMultExtra = BIT(18),
     ReducedEventMultExtra = BIT(19),
+    ReducedEventMultPV = BIT(19),//DEbadatta
+    ReducedEventMultAll = BIT(19),//Debadatta
     CollisionQvectCentr = BIT(20),
     Track = BIT(0),
     TrackCov = BIT(1),
@@ -207,6 +211,8 @@ class VarManager : public TObject
     kVtxZ,
     kVtxNcontrib,
     kVtxNcontribReal,
+    kMCVtxNcontribReal,//Debadatta
+    kMultITS,//Debadatta
     kVtxCovXX,
     kVtxCovXY,
     kVtxCovXZ,
@@ -228,6 +234,12 @@ class VarManager : public TObject
     kMultTracklets,
     kMultDimuons,
     kMultNTracksHasITS,
+    //===========Debadatta=====
+    kMultGlobalTracksEta05,
+    kMultGlobalTracksEta08,
+    kMultGlobalTracksEta10,
+     //========================
+    kMultNTracksHasITSR,
     kMultNTracksHasTPC,
     kMultNTracksHasTOF,
     kMultNTracksHasTRD,
@@ -546,6 +558,7 @@ class VarManager : public TObject
     kMCPdgCode,
     kMCParticleWeight,
     kMCPx,
+    kMCPxx,
     kMCPy,
     kMCPz,
     kMCE,
@@ -972,6 +985,16 @@ class VarManager : public TObject
   template <typename T>
   static void FillZDC(const T& zdc, float* values = nullptr);
 
+
+//======================== Debadatta =======================================
+    template <uint32_t fillMap, typename T, typename C>
+  static void MyBarrelTracksITS(const T& tracks, const C& collision, float* values = nullptr);
+
+    template <uint32_t TEventFillMap, typename TEvent, typename TTracks, typename U, typename T>
+  static void TracksCountsMC(TEvent const& collisionMC, TTracks const& tracks, const U& mcStack, T const& track, float* values = nullptr);
+  
+//========================================================================
+
   static void SetCalibrationObject(CalibObjects calib, TObject* obj)
   {
     fgCalibs[calib] = obj;
@@ -1027,6 +1050,8 @@ class VarManager : public TObject
   static bool fgUsedVars[kNVars]; // holds flags for when the corresponding variable is needed (e.g., in the histogram manager, in cuts, mixing handler, etc.)
   static bool fgUsedKF;
   static void SetVariableDependencies(); // toggle those variables on which other used variables might depend
+
+
 
   static float fgMagField;
   static std::map<int, int> fgRunMap;     // map of runs to be used in histogram axes
@@ -1432,6 +1457,11 @@ void VarManager::FillEvent(T const& event, float* values)
     values[kTrackOccupancyInTimeRange] = event.trackOccupancyInTimeRange();
     values[kMultAllTracksTPCOnly] = event.multAllTracksTPCOnly();
     values[kMultAllTracksITSTPC] = event.multAllTracksITSTPC();
+    // //Debadatta=======
+    // values[kMultGlobalTracksEta05] = event.globalTracksEta05();
+    // values[kMultGlobalTracksEta08] = event.globalTracksEta08();
+    // values[kMultGlobalTracksEta10] = event.globalTracksEta10();
+    // //===============
     if constexpr ((fillMap & ReducedEventMultExtra) > 0) {
       values[kNTPCpileupContribA] = event.nTPCpileupContribA();
       values[kNTPCpileupContribC] = event.nTPCpileupContribC();
@@ -1441,6 +1471,45 @@ void VarManager::FillEvent(T const& event, float* values)
       values[kNTPCtracksInFuture] = event.nTPCtracksInFuture();
     }
   }
+
+
+
+//=================Debadatta==============================
+  if constexpr ((fillMap & CollisionMultExtra) > 0 || (fillMap & ReducedEventMultPV) > 0 || (fillMap & ReducedEventMultAll) > 0) {
+    values[kMultNTracksHasITSR] = event.multNTracksHasITS();
+    values[kMultNTracksHasTPC] = event.multNTracksHasTPC();
+    values[kMultNTracksHasTOF] = event.multNTracksHasTOF();
+    values[kMultNTracksHasTRD] = event.multNTracksHasTRD();
+    values[kMultNTracksITSOnly] = event.multNTracksITSOnly();
+    values[kMultNTracksTPCOnly] = event.multNTracksTPCOnly();
+    values[kMultNTracksITSTPC] = event.multNTracksITSTPC();
+    values[kTrackOccupancyInTimeRange] = event.trackOccupancyInTimeRange();
+
+
+ if constexpr ((fillMap & ReducedEventMultAll) > 0) {
+     values[kMultAllTracksTPCOnly] = event.multAllTracksTPCOnly();
+     values[kMultAllTracksITSTPC] = event.multAllTracksITSTPC();
+      values[kNTPCpileupContribA] = event.nTPCpileupContribA();
+      values[kNTPCpileupContribC] = event.nTPCpileupContribC();
+      values[kNTPCpileupZA] = event.nTPCpileupZA();
+      values[kNTPCpileupZC] = event.nTPCpileupZC();
+      values[kNTPCtracksInPast] = event.nTPCtracksInPast();
+      values[kNTPCtracksInFuture] = event.nTPCtracksInFuture();
+    }
+  }
+
+
+//=======================================================
+
+
+
+
+
+
+
+
+
+
   // TODO: need to add EvSels and Cents tables, etc. in case of the central data model
 
   if constexpr ((fillMap & ReducedEvent) > 0) {
@@ -1656,6 +1725,14 @@ void VarManager::FillEvent(T const& event, float* values)
     values[kR2EP_AC] = TMath::Cos(2 * (Psi2A - Psi2C));
     values[kR2EP_BC] = TMath::Cos(2 * (Psi2B - Psi2C));
   }
+
+  //===========Debadatta============
+
+//  if constexpr ((fillMap & CollisionMultMC) > 0 || (fillMap & ReducedEventExtendedMC) > 0){
+//    values[kMCVtxNcontribReal] = event.multNTracksPV();
+//  }
+
+//================================
 
   if constexpr ((fillMap & CollisionMC) > 0) {
     values[kMCEventGeneratorId] = event.generatorsID();
@@ -4550,5 +4627,75 @@ float VarManager::calculatePhiV(T1 const& t1, T2 const& t2)
   pairPhiV = TMath::ACos(wx * ax + wy * ay); // phiv in [0,pi] //cosPhiV = wx * ax + wy * ay;
   return pairPhiV;
 }
+
+
+//====================  Debadatta =========================
+
+template <uint32_t fillMap, typename T, typename C>
+void VarManager::MyBarrelTracksITS(const T& tracks, const C& collision, float* values)
+{
+  if (!values) {
+    values = fgValues;
+  }
+  if(std::abs(collision.posZ()) < 10.0)
+  {
+  Int_t lHasITS = 0;
+  
+    for (auto& track : tracks) {
+     // if (track.hasITS())
+        lHasITS++;
+       cout <<"kMultITS =========== "<<lHasITS<<endl;
+    }  
+    values[kMultITS] = lHasITS;
+
+  } // Vz, SigmaZ cut
+} 
+
+
+// template <uint32_t TEventFillMap, typename TEvent, typename TTracks, typename T>
+// void VarManager::TracksCountsMC(TEvent const& collisionMC, TTracks const& tracks, T const& track,  aod::McParticles const& mcTracks, float* values)
+
+
+
+template <uint32_t TEventFillMap, typename TEvent, typename TTracks, typename U, typename T>
+void VarManager::TracksCountsMC(TEvent const& collisionMC, TTracks const& tracks, const U& mcStack, T const& track, float* values)
+{
+  if (!values) {
+    values = fgValues;
+  }
+    uint16_t mcflags = 0;
+    int trackCounter = 0;
+
+  if(std::abs(collisionMC.posZ()) < 10.0)
+  if(std::sqrt(collisionMC.covZZ()) < 0.25)
+  
+    Int_t lHasITS = 0;
+  {
+   for (auto& mctrack : mcStack) {
+    if(std::sqrt(mctrack.eta()) > 0.9) continue; 
+    values[kMCPxx] = mctrack.px();
+
+     // lHasITS++;
+   }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+//   void TracksCountsMC(aod::McCollisions const& mcCollisions)
+// {
+
+// }
+
+
+//=======================================================
 
 #endif // PWGDQ_CORE_VARMANAGER_H_

@@ -81,12 +81,13 @@ using MyEvents = soa::Join<aod::Collisions, aod::EvSels, aod::McCollisionLabels>
 using MyEventsWithMults = soa::Join<aod::Collisions, aod::EvSels, aod::Mults, aod::MultsExtra, aod::McCollisionLabels>;
 using MyEventsWithCent = soa::Join<aod::Collisions, aod::EvSels, aod::CentFT0Cs, aod::McCollisionLabels>;
 using MyEventsWithCentAndMults = soa::Join<aod::Collisions, aod::EvSels, aod::CentFT0Cs, aod::Mults, aod::MultsExtra, aod::McCollisionLabels>;
+// using FullTracksIU = soa::Join<aod::TracksIU, aod::TracksExtra>;//Debadatta
 
 // constexpr static uint32_t gkEventFillMap = VarManager::ObjTypes::BC | VarManager::ObjTypes::Collision;
 constexpr static uint32_t gkEventFillMapWithMults = VarManager::ObjTypes::BC | VarManager::ObjTypes::Collision | VarManager::ObjTypes::CollisionMult | VarManager::ObjTypes::CollisionMultExtra;
 // constexpr static uint32_t gkEventFillMapWithCent = VarManager::ObjTypes::BC | VarManager::ObjTypes::Collision | VarManager::ObjTypes::CollisionCent;
 constexpr static uint32_t gkEventFillMapWithCentAndMults = VarManager::ObjTypes::BC | VarManager::ObjTypes::Collision | VarManager::ObjTypes::CollisionCent | VarManager::CollisionMult | VarManager::CollisionMultExtra;
-// constexpr static uint32_t gkEventMCFillMap = VarManager::ObjTypes::CollisionMC;
+ constexpr static uint32_t gkEventMCFillMap = VarManager::ObjTypes::CollisionMC;//Kept On Debadatta
 // constexpr static uint32_t gkTrackFillMap = VarManager::ObjTypes::Track | VarManager::ObjTypes::TrackExtra | VarManager::ObjTypes::TrackDCA | VarManager::ObjTypes::TrackSelection | VarManager::ObjTypes::TrackPID;
 constexpr static uint32_t gkTrackFillMapWithCov = VarManager::ObjTypes::Track | VarManager::ObjTypes::TrackExtra | VarManager::ObjTypes::TrackDCA | VarManager::ObjTypes::TrackSelection | VarManager::ObjTypes::TrackCov | VarManager::ObjTypes::TrackPID;
 // constexpr static uint32_t gkTrackFillMapWithDalitzBits = gkTrackFillMap | VarManager::ObjTypes::DalitzBits;
@@ -97,6 +98,7 @@ constexpr static uint32_t gkMuonFillMapWithCov = VarManager::ObjTypes::Muon | Va
 // constexpr static uint32_t gkTrackFillMapWithAmbi = VarManager::ObjTypes::Track | VarManager::ObjTypes::AmbiTrack;
 constexpr static uint32_t gkMFTFillMap = VarManager::ObjTypes::TrackMFT;
 
+
 struct TableMakerMC {
 
   Produces<ReducedMCEvents> eventMC;
@@ -104,6 +106,7 @@ struct TableMakerMC {
 
   Produces<ReducedEvents> event;
   Produces<ReducedEventsExtended> eventExtended;
+  // Produces<REDUCEDMCEVENTITS>eventITS;//Debadatta
   Produces<ReducedEventsVtxCov> eventVtxCov;
   Produces<ReducedEventsInfo> eventInfo;
   Produces<ReducedEventsMultPV> multPV;
@@ -488,7 +491,7 @@ struct TableMakerMC {
                 0, 0, 0.0, 0.0, 0, 0);
       }
 
-      fCollIndexMap[collision.globalIndex()] = event.lastIndex();
+      fCollIndexMap[collision.globalIndex()] = event.lastIndex(); 
     }
   }
 
@@ -657,6 +660,69 @@ struct TableMakerMC {
       mftAssoc(fCollIndexMap[collision.globalIndex()], fMftIndexMap[track.globalIndex()]);
     }
   }
+
+
+//==============Debadatta==================================
+
+  // template <uint32_t TEventFillMap, typename TEvent, typename MyBarrelTracks>
+  // void skimTracksIU(TEvent const& CollisionMultMC, BCsWithTimestamps const& bcs, MyBarrelTracks const& tracks)
+
+    // template <uint32_t TTrackFillMap, typename TEvent, typename TTracks>
+  // void skimTracks(TEvent const& collision, TTracks const& /*tracks*/, TrackAssoc const& assocs, aod::McParticles const& mcTracks)//499
+
+  // void skimMCParticles(aod::McParticles const& mcTracks, aod::McCollisions const&)//---L--344
+
+  // auto mctrack = track.template mcParticle_as<aod::McParticles>();//L-600
+  // VarManager::FillTrackMC(mcTracks, mctrack);
+
+  // template <uint32_t TEventFillMap, uint32_t TTrackFillMap, uint32_t TMuonFillMap, uint32_t TMFTFillMap, typename TEvents, typename TTracks,//L-888
+  // typename TMuons, typename TMFTTracks, typename TTrackAssoc, typename TFwdTrackAssoc, typename TMFTTrackAssoc>
+  // void fullSkimming(TEvents const& collisions, BCsWithTimestamps const& bcs,
+  //                   TTracks const& tracksBarrel, TMuons const& muons, TMFTTracks const& mftTracks,
+  //                   TTrackAssoc const& trackAssocs, TFwdTrackAssoc const& fwdTrackAssocs, TMFTTrackAssoc const& mftAssocs,
+  //                   aod::McCollisions const& mcCollisions, aod::McParticles const& mcParticles)
+
+
+  template <uint32_t TEventFillMap, typename TEvent, typename TTracks>
+  void skimTracksIU(TEvent const& collisionMC, TTracks const& /*tracks*/, TrackAssoc const& assocs, BCsWithTimestamps const& bcs, aod::McParticles const& mcTracks)
+
+    {
+
+      auto bc = collisionMC.template bc_as<aod::BCsWithTimestamps>();
+      uint64_t tag = 0;
+      auto bcEvSel = collisionMC.template foundBC_as<aod::BCsWithTimestamps>();
+      if (bcEvSel.globalIndex() != bc.globalIndex()) {
+        tag |= (uint64_t(1) << 0);
+      }
+      if constexpr ((TEventFillMap & VarManager::ObjTypes::EventFilter) > 0) {
+        tag |= (collisionMC.eventFilter() << 56);
+      }
+      if constexpr ((TEventFillMap & VarManager::ObjTypes::EventFilter) > 0) {
+        tag |= (collisionMC.eventFilter() << 56);
+      }
+
+            VarManager::FillEvent<TEventFillMap>(collisionMC); // extract event information and place it in the fValues array
+        if (fDoDetailedQA) {
+          fHistMan->FillHistClass("Event_BeforeCuts", VarManager::fgValues);
+        }
+          fHistMan->FillHistClass("Event_AfterCuts", VarManager::fgValues);
+
+         VarManager::MyBarrelTracksITS<TEventFillMap>(mcTracks, collisionMC);
+
+
+
+      // if constexpr ((TEventFillMap & VarManager::ObjTypes::collisionMult) > 0 && (TEventFillMap & VarManager::ObjTypes::CollisionCent) > 0) {
+      // eventITS(bc.globalBC(), collisionMC.alias_raw(), collisionMC.selection_raw(), bc.timestamp(), VarManager::fgValues[VarManager::kCentVZERO],
+      //                 VarManager::fgValues[VarManager::kMultITS]);
+      //                 }
+
+      eventMC(VarManager::fgValues[VarManager::kMultITS]);
+               
+
+
+    }
+
+//==========================================================
 
   template <uint32_t TMuonFillMap, uint32_t TMFTFillMap, typename TEvent, typename TMuons, typename TMFTTracks>
   void skimMuons(TEvent const& collision, TMuons const& muons, FwdTrackAssoc const& muonAssocs, aod::McParticles const& mcTracks, TMFTTracks const& /*mftTracks*/)

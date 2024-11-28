@@ -36,6 +36,17 @@ DECLARE_SOA_COLUMN(EventFilter, eventFilter, uint64_t); //! Bit-field used for t
 DECLARE_SOA_TABLE(DQEventFilter, "AOD", "EVENTFILTER", //! Store event-level decisions (DQ high level triggers)
                   dqppfilter::EventFilter);
 
+
+// //Debadatta=============
+// namespace mult {
+//   DECLARE_SOA_COLUMN(GlobalTracksEta05, globalTracksEta05, float); // |eta| < 0.5
+//   DECLARE_SOA_COLUMN(GlobalTracksEta08, globalTracksEta08, float); // |eta| < 0.8
+//   DECLARE_SOA_COLUMN(GlobalTracksEta10, globalTracksEta10, float); // |eta| < 1.0
+// }
+// //=======================
+
+
+
 namespace reducedevent
 {
 
@@ -51,6 +62,8 @@ DECLARE_SOA_COLUMN(NTPCpileupZA, nTPCpileupZA, float);           //!  Median Z p
 DECLARE_SOA_COLUMN(NTPCpileupZC, nTPCpileupZC, float);           //!  Median Z position of pileup tracks on C side
 DECLARE_SOA_COLUMN(NTPCtracksInPast, nTPCtracksInPast, int);     //!  Number of TPC tracks in the past events (configurable, but e.g. one drift time)
 DECLARE_SOA_COLUMN(NTPCtracksInFuture, nTPCtracksInFuture, int); //!  Number of TPC tracks in the future events (configurable, but e.g. one drift time)
+
+
 
 // Columns declared to guarantee the backward compatibility of the tables
 DECLARE_SOA_COLUMN(QvecBPosRe, qvecBPosRe, float);
@@ -129,8 +142,8 @@ DECLARE_SOA_TABLE(ReducedEventsExtended, "AOD", "REEXTENDED", //!  Extended even
 
 DECLARE_SOA_TABLE(ReducedEventsMultPV, "AOD", "REMULTPV", //!  Multiplicity information for primary vertex
                   mult::MultNTracksHasITS, mult::MultNTracksHasTPC, mult::MultNTracksHasTOF, mult::MultNTracksHasTRD,
-                  mult::MultNTracksITSOnly, mult::MultNTracksTPCOnly, mult::MultNTracksITSTPC,
-                  evsel::NumTracksInTimeRange);
+                  mult::MultNTracksITSOnly, mult::MultNTracksTPCOnly, mult::MultNTracksITSTPC, evsel::NumTracksInTimeRange);
+                  // ,  mult::GlobalTracksEta05,  mult::GlobalTracksEta08, mult::GlobalTracksEta10);//Debadatta
 
 DECLARE_SOA_TABLE(ReducedEventsMultAll, "AOD", "REMULTALL", //!  Multiplicity information for all tracks in the event
                   mult::MultAllTracksTPCOnly, mult::MultAllTracksITSTPC,
@@ -176,6 +189,14 @@ DECLARE_SOA_TABLE(ReducedMCEvents, "AOD", "REDUCEDMCEVENT", //!   Event level MC
                   o2::soa::Index<>,
                   mccollision::GeneratorsID, reducedevent::MCPosX, reducedevent::MCPosY, reducedevent::MCPosZ,
                   mccollision::T, mccollision::Weight, mccollision::ImpactParameter);
+
+ //Debadatta=========================
+
+//  DECLARE_SOA_TABLE(ReducedMCEvents, "AOD", "REDUCEDMCEVENTITS", //!   Event level MC truth information
+//                   o2::soa::Index<>,
+//                   mccollision::itsmult);
+
+ //=================================                 
 
 using ReducedEvent = ReducedEvents::iterator;
 using StoredReducedEvent = StoredReducedEvents::iterator;
