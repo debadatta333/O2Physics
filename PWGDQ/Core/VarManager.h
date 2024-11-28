@@ -2480,7 +2480,7 @@ void VarManager::FillPhoton(T const& track, float* values)
     values = fgValues;
   }
 
-  // Quantities based on the basic table (contains just kine information and filter bits)
+  // Quantities based on the basic table (contains just kine information and filter bits) 
   if constexpr ((fillMap & Track) > 0 || (fillMap & ReducedTrack) > 0) {
     values[kPt] = track.pt();
     if (fgUsedVars[kP]) {
