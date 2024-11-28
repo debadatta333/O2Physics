@@ -2473,7 +2473,7 @@ void VarManager::FillTrackCollisionMatCorr(T const& track, C const& collision, M
   } 
 }
 
-template <uint32_t fillMap, typename T>
+template <uint32_t fillMap, typename T> 
 void VarManager::FillPhoton(T const& track, float* values)
 {
   if (!values) {
