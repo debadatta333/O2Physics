@@ -2500,7 +2500,7 @@ void VarManager::FillPhoton(T const& track, float* values)
     }
     values[kEta] = track.eta();
     values[kPhi] = track.phi();
-    values[kRap] = track.eta(); // photon does not know rapidity .y()
+    values[kRap] = track.eta(); // photon does not know rapidity .y() 
     values[kMassDau] = track.mGamma();
   }
 }
